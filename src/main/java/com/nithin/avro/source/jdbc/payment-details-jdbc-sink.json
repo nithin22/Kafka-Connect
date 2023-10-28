@@ -1,0 +1,27 @@
+{
+  "name": "payment-details-jdbc-sink-connector",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+    "tasks.max": "1",
+    "topics": "bread-retail-data",
+    "key.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "key.converter.schema.registry.url": "http://localhost:8081",
+    "value.converter.schema.registry.url": "http://localhost:8081",
+    "transforms":"Flatten,RenameFields",
+    "transforms.Flatten.type": "org.apache.kafka.connect.transforms.Flatten$Value",
+    "transforms.Flatten.delimiter": "_",
+    "transforms.RenameFields.type": "org.apache.kafka.connect.transforms.ReplaceField$Value",
+    "transforms.RenameFields.rename":"SENDER_NAME:SENDER_FULL_NAME, RECEIVER_NAME:RECEIVER_FULL_NAME, SENDER_ACCT:SENDER_ACCOUNT_NUMBER, RECEIVER_ACCT:RECEIVER_ACCOUNT_NUMBER, AMOUNT:TRANSACTION_AMOUNT, SENDER_BANK:SENDER_BANK_NAME, RECEIVER_BANK:RECEIVER_BANK_NAME, TXN_ID:TRANSACTION_ID, TXN_DATE:TRANSACTION_DATE",
+    "connection.url": "jdbc:mysql://localhost:3306/retail?useSSL=false&serverTimezone=UTC",
+    "connection.user": "root",
+    "connection.password": "root@1234",
+    "dialect.name": "MySqlDatabaseDialect",
+    "insert.mode": "upsert",
+    "batch.size": "2",
+    "table.name.format": "retail.Transactions_Details",
+    "pk.mode": "record_value",
+    "pk.fields": "TRANSACTION_ID",
+    "db.timezone": "US/Central"
+  }
+}
